@@ -22,6 +22,7 @@ I engineered 3 new features, fraction_to_poi, fraction_from_poi and other_compen
 Then I conducted an univariate feature selection process to identify top five most important features.
 
 They are:
+
 **Rank** | **Feature** | **Score**
 -------- | ----------- | ---------
 1 | exercised_stock_options | 25.098
