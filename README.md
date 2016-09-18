@@ -64,7 +64,7 @@ Parameters tuning is critical in developing accurate machine learning model. No 
 RF | n_estimators=10 | 0.84921 | 0.43974 | 0.20250
 RF | n_estimators=50 | 0.85571 | 0.48973 | 0.23850
 RF | n_estimators=100 | 0.85686 | 0.49792 | 0.23900
-GaussianNB | NA | 0.85629 | 0.49545 | 0.85629
+GaussianNB | NA | 0.85614 | 0.49568 | 0.40150
 
 Overall GaussianNB performed the best and I've decided to go with GauusianNB.
 
