@@ -31,7 +31,6 @@ for value in data_dict.values():
 print 'Total number of data points: ', len(data_dict)
 print 'Number of POI: ', num_poi
 print 'Total number of features: ', len(data_dict[data_dict.keys()[0]])
-
 ### Task 2: Remove outliers
 data_dict.pop('TOTAL')
 
@@ -80,14 +79,41 @@ labels, features = targetFeatureSplit(data)
 
 ### Conduct k-best univariate feature selection
 from sklearn.feature_selection import SelectKBest
-selector = SelectKBest(k = 5)
-selector.fit(features, labels)
-results_list = zip(selector.get_support(), features_list[1:], selector.scores_)
-print sorted(zip(selector.scores_,selector.get_support(),features_list[1:]), reverse = True)
+from sklearn.cross_validation import StratifiedShuffleSplit
+from sklearn.feature_selection import f_classif
+# Input an sklearn.cross_validation object here, e.g. StratifiedShuffleSplit
+splits = StratifiedShuffleSplit(labels, 3, test_size = .3, random_state = 0)
+k = 6 # Change this to number of features to use.
+
+# We will include all the features into variable best_features, then group by their
+# occurrences.
+best_features = []
+for i_train, i_test in splits:
+    features_train, features_test = [features[i] for i in i_train], [features[i] for i in i_test]
+    labels_train, labels_test = [labels[i] for i in i_train], [labels[i] for i in i_test]
+
+    # fit selector to training set
+    selector = SelectKBest(f_classif, k = k)
+    selector.fit(features_train, labels_train)
+
+    for i in selector.get_support(indices = True):
+        best_features.append(features_list[i+1])
+
+# This is the part where we group by occurrences.
+# At the end of this step, features_list should have k of the most occurring
+# features. In other words they are features that are highly likely to have
+# high scores from SelectKBest.
+from collections import defaultdict
+d = defaultdict(int)
+for i in best_features:
+    d[i] += 1
+import operator
+sorted_d = sorted(d.items(), key=operator.itemgetter(1))
+features_list = [x[0] for x in sorted_d[-k:]]
 
 ### Choose top five most important variables
-features_list = ['poi', 'exercised_stock_options', 'total_stock_value', 'bonus', 'salary',
-'fraction_to_poi']
+features_list = ['poi'] + features_list
+print features_list
 data = featureFormat(my_dataset, features_list, sort_keys = True)
 labels, features = targetFeatureSplit(data)
 
