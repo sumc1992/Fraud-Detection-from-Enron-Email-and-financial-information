@@ -26,8 +26,9 @@ Then I conducted an univariate feature selection process to identify top k most 
 Let's see how performance of GaussianNB classifier accuracy changes when different number of features is used.
 They are:
 
+
 **Number of features* | **Accuracy** | **Recall** | **Precision**
--------- | ----------- | ---------
+--------------------- | ------------ | ---------- | -------------
 3 | 0.84723 | 0.28350 | 0.50625
 4 | 0.86093 | 0.3490 | 0.51973
 5 | 0.84929 | 0.3935 | 0.46734
